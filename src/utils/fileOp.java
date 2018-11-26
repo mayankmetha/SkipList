@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 
 public class fileOp {
-    public void createFile(String filePath, long keys) {
+    public void CreateData(String filePath, long keys) {
         randomGenerator rd = new randomGenerator();
         try {
             BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath))));

@@ -2,7 +2,7 @@ package utils;
 
 public class trace {
 
-    private static Boolean gFlag = false;
+    private static Boolean gFlag = true;
     private static int gMaxSteps = 1;
     private static int gCurStep = 0;
 

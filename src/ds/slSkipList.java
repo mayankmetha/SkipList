@@ -57,11 +57,11 @@ public class slSkipList {
 
     public void display() {
         for(int i = maxLevel; i >= 0; i--) {
-            System.out.print("head->");
+            System.out.print("-\u221E->");
             for(slNode j = head.next.get(i); j != tail; j = j.next.get(i)) {
                 System.out.print(j.key+"->");
             }
-            System.out.println("tail");
+            System.out.println("\u221E");
         }
         System.out.println("Max level = "+maxLevel);
         System.out.println("Number of nodes = "+size);
@@ -148,11 +148,13 @@ public class slSkipList {
             int i = 3;
             while(i != 0) {
                 if(current == head)
-                    System.out.print("head");
+                    System.out.print("-\u221E");
                 else if(current == tail)
-                    System.out.print("tail");
+                    System.out.print("->\u221E");
                 else
-                    System.out.print("->"+current.key+"->");
+                    System.out.print("->"+current.key);
+                if(i==1 && current != tail)
+                    System.out.print("->");
                 current = current.next.get(level);
                 i--;
             }
@@ -183,5 +185,25 @@ public class slSkipList {
         } catch (IOException e) {
             System.out.println("Failed to read "+filePath);
         }
+    }
+
+    public long count(int level) {
+        slNode current = head;
+        long nodes = 0;
+        while(current.next.get(level) != tail) {
+            current = current.next.get(level);
+            nodes++;
+        }
+        return nodes;
+    }
+
+    public void stats() {
+        System.out.println("Number of levels: "+maxLevel);
+        System.out.println("Number of nodes excludes count for -\u221E and \u221E");
+        for(int level = 0; level <= maxLevel; level++) {
+            long nodes = count(level);
+            System.out.println("Nodes at level "+level+": "+nodes);
+        }
+        System.out.println("Total number of nodes: "+size);
     }
 }
