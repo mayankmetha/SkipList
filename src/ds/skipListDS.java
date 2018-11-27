@@ -2,7 +2,10 @@ package ds;
 
 import utils.trace;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class skipListDS {
 
@@ -110,6 +113,52 @@ public class skipListDS {
     public void SetTrace(Boolean flag, int StepSize) {
         trace.setFlag(flag);
         trace.setMaxSteps(StepSize);
+    }
+
+    public void InsertNodesFromFile(String list, String filePath) {
+        if(!instances.containsKey(list)) {
+            System.out.println("List does not exist");
+        } else {
+            try {
+                Scanner s = new Scanner(new FileReader(filePath)).useDelimiter(",");
+                if(instanceType.get(list) == SLL) {
+                    while(s.hasNextLong()) {
+                        ((slSkipList)instances.get(list)).insert(s.nextLong());
+                    }
+                } else if(instanceType.get(list) == DLL) {
+                    while(s.hasNextLong()) {
+                        ((dlSkipList)instances.get(list)).insert(s.nextLong());
+                    }
+                } else {
+                    System.out.println("Unable to find type of list");
+                }
+            } catch (IOException e) {
+                System.out.println("Failed to read "+filePath);
+            }
+        }
+    }
+
+    public void DeleteNodesFromFile(String list, String filePath) {
+        if(!instances.containsKey(list)) {
+            System.out.println("List does not exist");
+        } else {
+            try {
+                Scanner s = new Scanner(new FileReader(filePath)).useDelimiter(",");
+                if(instanceType.get(list) == SLL) {
+                    while(s.hasNextLong()) {
+                        ((slSkipList)instances.get(list)).delete(s.nextLong());
+                    }
+                } else if(instanceType.get(list) == DLL) {
+                    while(s.hasNextLong()) {
+                        ((dlSkipList)instances.get(list)).delete(s.nextLong());
+                    }
+                } else {
+                    System.out.println("Unable to find type of list");
+                }
+            } catch (IOException e) {
+                System.out.println("Failed to read "+filePath);
+            }
+        }
     }
 
 }

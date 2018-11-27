@@ -186,30 +186,6 @@ public class dlSkipList {
         }
     }
 
-    public void insert(String filePath) {
-        System.out.println("Inserting file data to skiplist");
-        try {
-            Scanner s = new Scanner(new FileReader(filePath)).useDelimiter(",");
-            while(s.hasNextLong()) {
-                insert(s.nextLong());
-            }
-        } catch (IOException e) {
-            System.out.println("Failed to read "+filePath);
-        }
-    }
-
-    public void delete(String filePath) {
-        System.out.println("Deleting file data to skiplist");
-        try {
-            Scanner s = new Scanner(new FileReader(filePath)).useDelimiter(",");
-            while(s.hasNextLong()) {
-                delete(s.nextLong());
-            }
-        } catch (IOException e) {
-            System.out.println("Failed to read "+filePath);
-        }
-    }
-
     public long count(int level) {
         dlNode current = head;
         long nodes = 0;
