@@ -1,7 +1,8 @@
 package ui;
 
+import utils.parser;
+
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -12,7 +13,9 @@ public class windows extends JFrame {
     JPanel visPanel;
     JPanel ioPanel;
     JPanel statPanel;
-    JLabel label;
+    JTextArea label;
+    static int lines = 1;
+    static int len = 2;
     public windows() {
         jFrame = new JFrame("SkipList");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,6 +31,8 @@ public class windows extends JFrame {
                 int mode  = -1;
                 if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
                     mode = 0;
+                if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                    mode = 1;
                 updateLabel(mode,e.getKeyChar());
             }
         });
@@ -44,10 +49,15 @@ public class windows extends JFrame {
     void setIoPanel() {
         ioPanel = new JPanel();
         ioPanel.setBounds(0,432,1080,216);
-        ioPanel.setBackground(Color.yellow);
-        ioPanel.setLayout(new FlowLayout());
-        label = new JLabel();
-        label.setBackground(Color.green);
+        ioPanel.setBackground(Color.black);
+        ioPanel.setLayout(new FlowLayout(SwingConstants.LEADING));
+        label = new JTextArea();
+        label.setEditable(false);
+        label.setCursor(null);
+        label.setFocusable(false);
+        label.setForeground(Color.WHITE);
+        label.setBackground(Color.BLACK);
+        label.setText("> ");
         ioPanel.add(label);
         container.add(ioPanel);
     }
@@ -62,8 +72,13 @@ public class windows extends JFrame {
     void updateLabel(int i, char ch) {
         switch (i) {
             case 0:
-                if(label.getText().length() != 0)
+                if(label.getText().length() != len)
                     label.setText(label.getText().substring(0, label.getText().length() - 1));
+                break;
+            case 1:
+                lines++;
+                label.setText(label.getText()+"\n> ");
+                len = label.getText().length();
                 break;
             default:
                 if((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <='Z') || (ch >= '0' && ch <= '9') || (ch == '(') || (ch == ')') || (ch == ',') || (ch == ' '))
