@@ -1,20 +1,24 @@
 package utils;
 
-import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class parser {
-    String args[] = new String[5];
+    List<String> args;
     public void parse(String str) {
+        args = new ArrayList<>();
         int pos = str.indexOf('(');
-        args[0] = str.substring(0,pos);
-        int i = 1, newPos;
-        while((newPos = str.indexOf(',',pos)) > 0) {
-            args[i++] = str.substring(pos+1,newPos);
+        args.add(str.substring(0,pos));
+        int newPos;
+        newPos = str.indexOf(',',pos);
+        while(newPos > pos && newPos < str.indexOf(')') && pos != newPos) {
+            args.add(str.substring(pos+1,newPos));
             pos = newPos;
+            newPos = str.indexOf(',',pos+1);
         }
-        args[i] = str.substring(pos+1,str.indexOf(')'));
-        for(int x = 0; x < args.length; x++) {
-            System.out.println(args[x]);
+        args.add(str.substring(pos+1,str.indexOf(')')));
+        for(int x = 0; x < args.size(); x++) {
+            System.out.println(args.get(x));
         }
     }
 }

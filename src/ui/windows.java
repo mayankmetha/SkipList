@@ -16,7 +16,9 @@ public class windows extends JFrame {
     JTextArea label;
     static int lines = 1;
     static int len = 2;
+    parser inputParser;
     public windows() {
+        inputParser = new parser();
         jFrame = new JFrame("SkipList");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setSize(1080,720);
@@ -77,6 +79,7 @@ public class windows extends JFrame {
                 break;
             case 1:
                 lines++;
+                inputParser.parse(getInput());
                 label.setText(label.getText()+"\n> ");
                 len = label.getText().length();
                 break;
@@ -84,5 +87,9 @@ public class windows extends JFrame {
                 if((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <='Z') || (ch >= '0' && ch <= '9') || (ch == '(') || (ch == ')') || (ch == ',') || (ch == ' '))
                     label.setText(label.getText()+""+ch);
         }
+    }
+
+    String getInput() {
+        return label.getText().substring(len,label.getText().length()-0);
     }
 }
