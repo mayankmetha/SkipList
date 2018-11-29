@@ -14,110 +14,108 @@ public class skipListDS {
     HashMap<String, Object> instances= new HashMap<>();
     HashMap<String, Integer> instanceType = new HashMap<>();
 
-    public void CreateList(String list, int mode) {
+    public String CreateList(String list, int mode) {
         if(instances.containsKey(list)) {
-            System.out.println("Failed to create list as it already exist");
+            return ("Failed to create list as it already exist");
         } else if(mode == SLL) {
             instances.put(list, new slSkipList());
             instanceType.put(list,1);
-            System.out.println("Created "+list);
+            return ("Created "+list);
         } else if(mode == DLL) {
             instances.put(list, new dlSkipList());
             instanceType.put(list,2);
-            System.out.println("Created "+list);
-        } else {
-            System.out.println("Invalid parameters");
+            return ("Created "+list);
         }
+        return ("Invalid parameters");
     }
 
-    public void InsertNode(String list, long k1) {
+    public String InsertNode(String list, long k1) {
         if(!instances.containsKey(list)) {
-            System.out.println("List does not exist");
+            return ("List does not exist");
         } else {
-            if(instanceType.get(list) == SLL) {
-                ((slSkipList)instances.get(list)).insert(k1);
-            } else if(instanceType.get(list) == DLL) {
-                ((dlSkipList)instances.get(list)).insert(k1);
-            } else {
-                System.out.println("Unable to find type of list");
+            if (instanceType.get(list) == SLL) {
+                return ((slSkipList) instances.get(list)).insert(k1);
+            } else if (instanceType.get(list) == DLL) {
+                return ((dlSkipList) instances.get(list)).insert(k1);
             }
         }
+        return ("Unable to find type of list");
     }
 
-    public void DeleteNode(String list, long k1) {
+    public String DeleteNode(String list, long k1) {
         if(!instances.containsKey(list)) {
-            System.out.println("List oes not exist");
+            return ("List does not exist");
         } else {
             if(instanceType.get(list) == SLL) {
-                ((slSkipList)instances.get(list)).delete(k1);
+                return ((slSkipList)instances.get(list)).delete(k1);
             } else if(instanceType.get(list) == DLL) {
-                ((dlSkipList)instances.get(list)).delete(k1);
-            } else {
-                System.out.println("Unable to find type of list");
+                return ((dlSkipList)instances.get(list)).delete(k1);
             }
         }
+        return ("Unable to find type of list");
     }
 
-    public void ShowList(String list, int from, int to) {
+    public String ShowList(String list, int from, int to) {
         if(!instances.containsKey(list)) {
-            System.out.println("List oes not exist");
+            return ("List does not exist");
         } else {
-            if(instanceType.get(list) == SLL) {
-                ((slSkipList)instances.get(list)).show(from,to);
-            } else if(instanceType.get(list) == DLL) {
-                ((dlSkipList)instances.get(list)).show(from,to);
-            } else {
-                System.out.println("Unable to find type of list");
+            if (instanceType.get(list) == SLL) {
+                return ((slSkipList) instances.get(list)).show(from, to);
+            } else if (instanceType.get(list) == DLL) {
+                return ((dlSkipList) instances.get(list)).show(from, to);
             }
         }
+        return ("Unable to find type of list");
     }
 
-    public void FindNode(String list, long key) {
+    public String FindNode(String list, long key) {
         if(!instances.containsKey(list)) {
-            System.out.println("List oes not exist");
+            return ("List does not exist");
         } else {
-            if(instanceType.get(list) == SLL) {
-                ((slSkipList)instances.get(list)).find(key);
-            } else if(instanceType.get(list) == DLL) {
-                ((dlSkipList)instances.get(list)).find(key);
-            } else {
-                System.out.println("Unable to find type of list");
+            if (instanceType.get(list) == SLL) {
+                return ((slSkipList) instances.get(list)).find(key);
+            } else if (instanceType.get(list) == DLL) {
+                return ((dlSkipList) instances.get(list)).find(key);
             }
         }
+        return ("Unable to find type of list");
     }
 
-    public void DeleteList(String list) {
+    public String DeleteList(String list) {
         if(!instances.containsKey(list)) {
-            System.out.println("List oes not exist");
-        } else {
-            instances.remove(list);
-            instanceType.remove(list);
-            System.out.println(list+" deleted");
+            return ("List does not exist");
         }
+        instances.remove(list);
+        instanceType.remove(list);
+        return (list+" deleted");
     }
 
-    public void PrintStats(String list) {
+    public String PrintStats(String list) {
         if(!instances.containsKey(list)) {
-            System.out.println("List oes not exist");
+            return ("List does not exist");
         } else {
-            if(instanceType.get(list) == SLL) {
-                ((slSkipList)instances.get(list)).stats();
-            } else if(instanceType.get(list) == DLL) {
-                ((dlSkipList)instances.get(list)).stats();
-            } else {
-                System.out.println("Unable to find type of list");
+            if (instanceType.get(list) == SLL) {
+                return ((slSkipList) instances.get(list)).stats();
+            } else if (instanceType.get(list) == DLL) {
+                return ((dlSkipList) instances.get(list)).stats();
             }
         }
+        return ("Unable to find type of list");
     }
 
-    public void SetTrace(Boolean flag, int StepSize) {
+    public String SetTrace(Boolean flag, int StepSize) {
         trace.setFlag(flag);
         trace.setMaxSteps(StepSize);
+        if(flag) {
+            return ("SetTrace set to True with step size "+StepSize);
+        } else {
+            return ("SetTrace set to False");
+        }
     }
 
-    public void InsertNodesFromFile(String list, String filePath) {
+    public String InsertNodesFromFile(String list, String filePath) {
         if(!instances.containsKey(list)) {
-            System.out.println("List does not exist");
+            return ("List does not exist");
         } else {
             try {
                 Scanner s = new Scanner(new FileReader(filePath)).useDelimiter(",");
@@ -125,22 +123,24 @@ public class skipListDS {
                     while(s.hasNextLong()) {
                         ((slSkipList)instances.get(list)).insert(s.nextLong());
                     }
+                    return ("Successfully added nodes from file");
                 } else if(instanceType.get(list) == DLL) {
                     while(s.hasNextLong()) {
                         ((dlSkipList)instances.get(list)).insert(s.nextLong());
                     }
+                    return ("Successfully added nodes from file");
                 } else {
-                    System.out.println("Unable to find type of list");
+                    return ("Unable to find type of list");
                 }
             } catch (IOException e) {
-                System.out.println("Failed to read "+filePath);
+                return ("Failed to read "+filePath);
             }
         }
     }
 
-    public void DeleteNodesFromFile(String list, String filePath) {
+    public String DeleteNodesFromFile(String list, String filePath) {
         if(!instances.containsKey(list)) {
-            System.out.println("List does not exist");
+            return ("List does not exist");
         } else {
             try {
                 Scanner s = new Scanner(new FileReader(filePath)).useDelimiter(",");
@@ -148,15 +148,17 @@ public class skipListDS {
                     while(s.hasNextLong()) {
                         ((slSkipList)instances.get(list)).delete(s.nextLong());
                     }
+                    return ("Successfully deleted nodes from file");
                 } else if(instanceType.get(list) == DLL) {
                     while(s.hasNextLong()) {
                         ((dlSkipList)instances.get(list)).delete(s.nextLong());
                     }
+                    return ("Successfully deleted nodes from file");
                 } else {
-                    System.out.println("Unable to find type of list");
+                    return ("Unable to find type of list");
                 }
             } catch (IOException e) {
-                System.out.println("Failed to read "+filePath);
+                return ("Failed to read "+filePath);
             }
         }
     }

@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 
 public class fileOp {
-    public void CreateData(String filePath, long keys) {
+    public String CreateData(String filePath, long keys) {
         randomGenerator rd = new randomGenerator();
         try {
             BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath))));
@@ -18,8 +18,9 @@ public class fileOp {
             }
             br.write(Long.toString(rd.getRandomNumber()));
             br.close();
+            return ("Creating file in "+filePath+" successful");
         } catch (IOException e) {
-            System.out.println("Creating file in "+filePath+" failed");
+            return ("Creating file in "+filePath+" failed");
         }
     }
 }

@@ -55,21 +55,23 @@ public class slSkipList {
         return false;
     }
 
-    public void display() {
+    public String display() {
+        String str = "";
         for(int i = maxLevel; i >= 0; i--) {
-            System.out.print("-\u221E->");
+            str +="-\u221E->";
             for(slNode j = head.next.get(i); j != tail; j = j.next.get(i)) {
-                System.out.print(j.key+"->");
+                str += j.key+"->";
             }
-            System.out.println("\u221E");
+            str +="\u221E\n";
         }
-        System.out.println("Max level = "+maxLevel);
-        System.out.println("Number of nodes = "+size);
+        str += "Max level = "+maxLevel;
+        str += "\nNumber of nodes = "+size+"\n";
+        return str;
     }
 
-    public void insert(long key) {
+    public String insert(long key) {
         if(contains(key) > -1)
-            return;
+            return "Ignoring duplicate keys";
         slNode toAdd = new slNode(key);
         int level = rd.getLevel();
         while(level >= maxLevel) {
@@ -86,15 +88,16 @@ public class slSkipList {
         size++;
         if(trace.getFlag()) {
             if(trace.getCurStep() == (trace.getMaxSteps()-1))
-                display();
+                return display();
             trace.setCurStep((trace.getCurStep()+1)% trace.getMaxSteps());
         }
+        return "Node Inserted";
     }
 
-    public void delete(long key) {
+    public String delete(long key) {
         int nodeLevel = contains(key);
         if(nodeLevel == -1)
-            return;
+            return "Key does not exist";
         int level = nodeLevel;
         while(level >= 0) {
             slNode current = findNext(key,level);
@@ -112,14 +115,15 @@ public class slSkipList {
         }
         if(trace.getFlag()) {
             if(trace.getCurStep() == (trace.getMaxSteps()-1))
-                display();
+                return display();
             trace.setCurStep((trace.getCurStep()+1)% trace.getMaxSteps());
         }
+        return "Node deleted";
     }
 
-    public void show(int from, int to) {
+    public String show(int from, int to) {
         if(from > size && to > size && from > to)
-            return;
+            return ("Parameters invalid");
         List<slNode> tmp = new ArrayList<>();
         List<Integer> levels = new ArrayList<>();
         int i = 0;
@@ -130,37 +134,41 @@ public class slSkipList {
                 levels.add(current.next.size());
             }
         }
+        String str = "";
         for(int level = Collections.max(levels)-1; level >= 0; level--) {
             for (slNode aTmp : tmp) {
                 if (aTmp.next.size() > level)
-                    System.out.print("->" + aTmp.key);
+                    str +="->" + aTmp.key;
             }
-            System.out.println("->");
+            str += "->\n";
         }
+        return str;
     }
 
-    public void find(long key) {
+    public String find(long key) {
         int level = contains(key);
         if(level == -1)
-            return;
+            return "Key not found";
+        String str = "";
         while(level >=0) {
             slNode current= findNext(key,level);
             int i = 3;
             while(i != 0) {
                 if(current == head)
-                    System.out.print("-\u221E");
+                    str += "-\u221E";
                 else if(current == tail)
-                    System.out.print("->\u221E");
+                    str += "->\u221E";
                 else
-                    System.out.print("->"+current.key);
+                    str += "->"+current.key;
                 if(i==1 && current != tail)
-                    System.out.print("->");
+                    str += "->";
                 current = current.next.get(level);
                 i--;
             }
-            System.out.println();
+            str += "\n";
             level--;
         }
+        return str;
     }
 
     public long count(int level) {
@@ -173,13 +181,15 @@ public class slSkipList {
         return nodes;
     }
 
-    public void stats() {
-        System.out.println("Number of levels: "+maxLevel);
-        System.out.println("Number of nodes excludes count for -\u221E and \u221E");
+    public String stats() {
+        String str = "";
+        str += "Number of levels: "+maxLevel+"\n";
+        str += "Number of nodes excludes count for -\u221E and \u221E\n";
         for(int level = 0; level <= maxLevel; level++) {
             long nodes = count(level);
-            System.out.println("Nodes at level "+level+": "+nodes);
+            str += "Nodes at level "+level+": "+nodes+"\n";
         }
-        System.out.println("Total number of nodes: "+size);
+        str += "Total number of nodes: "+size+"\n";
+        return str;
     }
 }
