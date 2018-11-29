@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 
-public class fileOp {
-    public String CreateData(String filePath, long keys) {
+class fileOp {
+    String CreateData(String filePath, long keys) {
         randomGenerator rd = new randomGenerator();
         try {
             BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath))));

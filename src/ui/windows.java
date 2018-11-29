@@ -8,20 +8,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class windows extends JFrame {
-    JFrame jFrame;
-    Container container;
-    JPanel visPanel;
-    JPanel ioPanel;
-    JPanel statPanel;
-    JTextArea label;
-    JLabel timeLabel;
-    static int len = 2;
-    parser inputParser;
-    int lines = 0;
+    private Container container;
+    private JTextArea label;
+    private JLabel timeLabel;
+    private static int len = 2;
+    private parser inputParser;
+    private int lines = 0;
 
     public windows() {
         inputParser = new parser();
-        jFrame = new JFrame("SkipList");
+        JFrame jFrame = new JFrame("SkipList");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setSize(1080,720);
         container = jFrame.getContentPane();
@@ -43,15 +39,15 @@ public class windows extends JFrame {
         });
     }
 
-    void setVisPanel() {
-        visPanel = new JPanel();
+    private void setVisPanel() {
+        JPanel visPanel = new JPanel();
         visPanel.setBounds(0,0,1080,432);
         visPanel.setBackground(Color.WHITE);
         container.add(visPanel);
     }
 
-    void setIoPanel() {
-        ioPanel = new JPanel();
+    private void setIoPanel() {
+        JPanel ioPanel = new JPanel();
         ioPanel.setBounds(0,432,1080,216);
         ioPanel.setBackground(Color.black);
         FlowLayout ioLayout = new FlowLayout(SwingConstants.LEADING);
@@ -67,8 +63,8 @@ public class windows extends JFrame {
         container.add(ioPanel);
     }
 
-    void setStatPanel() {
-        statPanel = new JPanel();
+    private void setStatPanel() {
+        JPanel statPanel = new JPanel();
         statPanel.setBounds(0,648,1080,72);
         statPanel.setBackground(Color.DARK_GRAY);
         FlowLayout statLayout = new FlowLayout();
@@ -80,7 +76,7 @@ public class windows extends JFrame {
         container.add(statPanel);
     }
 
-    void updateLabel(int i, char ch) {
+    private void updateLabel(int i, char ch) {
         switch (i) {
             case 0:
                 if(label.getText().length() != len)
@@ -102,11 +98,11 @@ public class windows extends JFrame {
         }
     }
 
-    String getInput() {
-        return label.getText().substring(len,label.getText().length()-0);
+    private String getInput() {
+        return label.getText().substring(len);
     }
 
-    void fitRows() {
+    private void fitRows() {
         if(lines >= 10) {
             label.setText(label.getText().substring(label.getText().indexOf('\n')+1));
             lines--;
@@ -114,11 +110,11 @@ public class windows extends JFrame {
         }
     }
 
-    void updateLabelLength() {
+    private void updateLabelLength() {
         len = label.getText().length();
     }
 
-    void setOutput(String str) {
+    private void setOutput(String str) {
         String line[] = str.split("\n");
         for(String x: line) {
             lines++;
@@ -128,7 +124,7 @@ public class windows extends JFrame {
         }
     }
 
-    void setTime(Long time) {
+    private void setTime(Long time) {
         timeLabel.setText("<html><div style='text-align: center;'>"+ time/Math.pow(10,6) + " ms<br>"+ time + " ns</div></html>");
     }
 

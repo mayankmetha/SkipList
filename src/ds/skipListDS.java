@@ -11,8 +11,8 @@ public class skipListDS {
 
     final private static int SLL = 1;
     final private static int DLL = 2;
-    HashMap<String, Object> instances= new HashMap<>();
-    HashMap<String, Integer> instanceType = new HashMap<>();
+    private HashMap<String, Object> instances= new HashMap<>();
+    private HashMap<String, Integer> instanceType = new HashMap<>();
 
     public String CreateList(String list, int mode) {
         if(instances.containsKey(list)) {

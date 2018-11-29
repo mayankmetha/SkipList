@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class parser {
-    skipListDS ds;
-    fileOp op;
-    List<String> args;
+    private skipListDS ds;
+    private fileOp op;
 
     public parser() {
         ds = new skipListDS();
@@ -16,12 +15,11 @@ public class parser {
     }
 
     public String parseInput(String str) {
-        args = new ArrayList<>();
+        List<String> args = new ArrayList<>();
         int pos = str.indexOf('(');
         args.add(str.substring(0,pos));
-        int newPos;
-        newPos = str.indexOf(',',pos);
-        while(newPos > pos && newPos < str.indexOf(')') && pos != newPos) {
+        int newPos = str.indexOf(',',pos);
+        while(newPos > pos && newPos < str.indexOf(')')) {
             args.add(str.substring(pos+1,newPos));
             pos = newPos;
             newPos = str.indexOf(',',pos+1);
@@ -65,12 +63,12 @@ public class parser {
                 System.out.println("SyntaxError");
         } else if(args.size() == 3 && args.get(0).matches("InsertNodesFromFile")) {
             if(args.get(1) != null && args.get(2) != null)
-                return ds.InsertNodesFromFile(args.get(1),args.get(2));
+                return ds.InsertNodesFromFile(args.get(1), args.get(2));
             else
                 return "Syntax Error";
         } else if(args.size() == 3 && args.get(0).matches("DeleteNodesFromFile")) {
             if(args.get(1) != null && args.get(2) != null)
-                return ds.DeleteNodesFromFile(args.get(1),args.get(2));
+                return ds.DeleteNodesFromFile(args.get(1), args.get(2));
             else
                 return "Syntax Error";
         } else if(args.size() == 2 && args.get(0).matches("PrintStats")) {

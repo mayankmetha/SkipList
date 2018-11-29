@@ -6,7 +6,7 @@ public class randomGenerator {
 
     private Random random = new Random(System.currentTimeMillis());
 
-    public long getRandomNumber() {
+    long getRandomNumber() {
         char digits[] = new char[10];
         digits[0] = (char)(random.nextInt(8)+'1');
         for(int i = 1; i < digits.length; i++) {

@@ -3,21 +3,18 @@ package ds;
 import utils.randomGenerator;
 import utils.trace;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
+import java.util.List;
 
-public class slSkipList {
+class slSkipList {
     private slNode head;
     private slNode tail;
     private int maxLevel;
     private int size;
     private randomGenerator rd = new randomGenerator();
 
-    public slSkipList() {
+    slSkipList() {
         head = new slNode();
         tail = new slNode();
         maxLevel = 0;
@@ -26,7 +23,7 @@ public class slSkipList {
         tail.next.add(null);
     }
 
-    public slNode findNext(long key,int level) {
+    private slNode findNext(long key, int level) {
         slNode current = head;
         while(current.next.get(level) != tail) {
             if((current.next.get(level)).key < key)
@@ -37,7 +34,7 @@ public class slSkipList {
         return current;
     }
 
-    public int contains(long key) {
+    private int contains(long key) {
         int level = maxLevel;
         do {
             slNode tmp = findNext(key,level);
@@ -48,28 +45,28 @@ public class slSkipList {
         return -1;
     }
 
-    public Boolean emptyListLevelMatch(int level) {
+    private Boolean emptyListLevelMatch(int level) {
         if(level > 0) {
             return head.next.get(level) == tail && head.next.get(level - 1) == tail;
         }
         return false;
     }
 
-    public String display() {
-        String str = "";
+    private String display() {
+        StringBuilder str = new StringBuilder();
         for(int i = maxLevel; i >= 0; i--) {
-            str +="-\u221E->";
+            str.append("-\u221E->");
             for(slNode j = head.next.get(i); j != tail; j = j.next.get(i)) {
-                str += j.key+"->";
+                str.append(j.key).append("->");
             }
-            str +="\u221E\n";
+            str.append("\u221E\n");
         }
-        str += "Max level = "+maxLevel;
-        str += "\nNumber of nodes = "+size+"\n";
-        return str;
+        str.append("Max level = ").append(maxLevel);
+        str.append("\nNumber of nodes = ").append(size).append("\n");
+        return str.toString();
     }
 
-    public String insert(long key) {
+    String insert(long key) {
         if(contains(key) > -1)
             return "Ignoring duplicate keys";
         slNode toAdd = new slNode(key);
@@ -94,7 +91,7 @@ public class slSkipList {
         return "Node Inserted";
     }
 
-    public String delete(long key) {
+    String delete(long key) {
         int nodeLevel = contains(key);
         if(nodeLevel == -1)
             return "Key does not exist";
@@ -121,7 +118,7 @@ public class slSkipList {
         return "Node deleted";
     }
 
-    public String show(int from, int to) {
+    String show(int from, int to) {
         if(from > size && to > size && from > to)
             return ("Parameters invalid");
         List<slNode> tmp = new ArrayList<>();
@@ -134,44 +131,44 @@ public class slSkipList {
                 levels.add(current.next.size());
             }
         }
-        String str = "";
+        StringBuilder str = new StringBuilder();
         for(int level = Collections.max(levels)-1; level >= 0; level--) {
             for (slNode aTmp : tmp) {
                 if (aTmp.next.size() > level)
-                    str +="->" + aTmp.key;
+                    str.append("->").append(aTmp.key);
             }
-            str += "->\n";
+            str.append("->\n");
         }
-        return str;
+        return str.toString();
     }
 
-    public String find(long key) {
+    String find(long key) {
         int level = contains(key);
         if(level == -1)
             return "Key not found";
-        String str = "";
+        StringBuilder str = new StringBuilder();
         while(level >=0) {
             slNode current= findNext(key,level);
             int i = 3;
             while(i != 0) {
                 if(current == head)
-                    str += "-\u221E";
+                    str.append("-\u221E");
                 else if(current == tail)
-                    str += "->\u221E";
+                    str.append("->\u221E");
                 else
-                    str += "->"+current.key;
+                    str.append("->").append(current.key);
                 if(i==1 && current != tail)
-                    str += "->";
+                    str.append("->");
                 current = current.next.get(level);
                 i--;
             }
-            str += "\n";
+            str.append("\n");
             level--;
         }
-        return str;
+        return str.toString();
     }
 
-    public long count(int level) {
+    private long count(int level) {
         slNode current = head;
         long nodes = 0;
         while(current.next.get(level) != tail) {
@@ -181,15 +178,15 @@ public class slSkipList {
         return nodes;
     }
 
-    public String stats() {
-        String str = "";
-        str += "Number of levels: "+maxLevel+"\n";
-        str += "Number of nodes excludes count for -\u221E and \u221E\n";
+    String stats() {
+        StringBuilder str = new StringBuilder();
+        str.append("Number of levels: ").append(maxLevel).append("\n");
+        str.append("Number of nodes excludes count for -\u221E and \u221E\n");
         for(int level = 0; level <= maxLevel; level++) {
             long nodes = count(level);
-            str += "Nodes at level "+level+": "+nodes+"\n";
+            str.append("Nodes at level ").append(level).append(": ").append(nodes).append("\n");
         }
-        str += "Total number of nodes: "+size+"\n";
-        return str;
+        str.append("Total number of nodes: ").append(size).append("\n");
+        return str.toString();
     }
 }
