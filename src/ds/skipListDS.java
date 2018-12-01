@@ -163,4 +163,17 @@ public class skipListDS {
         }
     }
 
+    public String Display(String list) {
+        if(!instances.containsKey(list)) {
+            return ("List does not exist");
+        } else {
+            if (instanceType.get(list) == SLL) {
+                return ((slSkipList) instances.get(list)).display();
+            } else if (instanceType.get(list) == DLL) {
+                return ((dlSkipList) instances.get(list)).display();
+            }
+        }
+        return ("Unable to find type of list");
+    }
+
 }

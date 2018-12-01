@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 public class windows extends JFrame {
     private Container container;
     private JTextArea label;
+    private JTextArea visLabel;
     private JLabel timeLabel;
     private static int len = 2;
     private parser inputParser;
@@ -43,6 +44,17 @@ public class windows extends JFrame {
         JPanel visPanel = new JPanel();
         visPanel.setBounds(0,0,1080,432);
         visPanel.setBackground(Color.WHITE);
+        BorderLayout visLayout = new BorderLayout();
+        visPanel.setLayout(visLayout);
+        visPanel.setAutoscrolls(true);
+        visLabel = new JTextArea();
+        visLabel.setEditable(false);
+        visLabel.setCursor(null);
+        visLabel.setFocusable(false);
+        visLabel.setAutoscrolls(true);
+        visLabel.setBackground(Color.WHITE);
+        visLabel.setForeground(Color.BLACK);
+        visPanel.add(new JScrollPane(visLabel),BorderLayout.CENTER);
         container.add(visPanel);
     }
 
@@ -86,7 +98,10 @@ public class windows extends JFrame {
                 Long startTime = System.nanoTime();
                 setOutput(inputParser.parseInput(getInput()));
                 Long stopTime = System.nanoTime();
-                setTime(stopTime- startTime);
+                if(inputParser.getVisRequired()) {
+                    setTime(stopTime - startTime);
+                    setVisLabel(inputParser.displayVisual());
+                }
                 lines++;
                 fitRows();
                 label.setText(label.getText()+"\n> ");
@@ -126,6 +141,14 @@ public class windows extends JFrame {
 
     private void setTime(Long time) {
         timeLabel.setText("<html><div style='text-align: center;'>"+ time/Math.pow(10,6) + " ms<br>"+ time + " ns</div></html>");
+    }
+
+    private void setVisLabel(String str) {
+        visLabel.setText("List: "+inputParser.getListName());
+        String line[] = str.split("\n");
+        for(String x: line) {
+            visLabel.setText(visLabel.getText()+"\n"+x);
+        }
     }
 
 }

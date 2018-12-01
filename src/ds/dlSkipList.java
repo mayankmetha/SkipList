@@ -1,8 +1,8 @@
 package ds;
 
 import utils.randomGenerator;
-import utils.trace;
 
+import java.lang.instrument.Instrumentation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -66,7 +66,7 @@ class dlSkipList {
         return false;
     }
 
-    private String display() {
+    String display() {
         StringBuilder str = new StringBuilder();
         for(int i = maxLevel; i >= 0; i--) {
             str.append("-\u221E<->");
@@ -75,8 +75,6 @@ class dlSkipList {
             }
             str.append("\u221E\n");
         }
-        str.append("Max level = ").append(maxLevel);
-        str.append("\nNumber of nodes = ").append(size).append("\n");
         return str.toString();
     }
 
@@ -102,11 +100,6 @@ class dlSkipList {
             level--;
         }
         size++;
-        if(trace.getFlag()) {
-            if(trace.getCurStep() == (trace.getMaxSteps()-1))
-                return display();
-            trace.setCurStep((trace.getCurStep()+1)% trace.getMaxSteps());
-        }
         return "Node Inserted";
     }
 
@@ -132,11 +125,6 @@ class dlSkipList {
                 maxLevel--;
             } else
                 break;
-        }
-        if(trace.getFlag()) {
-            if(trace.getCurStep() == (trace.getMaxSteps()-1))
-                return display();
-            trace.setCurStep((trace.getCurStep()+1)% trace.getMaxSteps());
         }
         return "Node deleted";
     }
@@ -210,6 +198,24 @@ class dlSkipList {
             str.append("Nodes at level ").append(level).append(": ").append(nodes).append("\n");
         }
         str.append("Total number of nodes: ").append(size).append("\n");
+        int ssize = 8*size;
+        int flag = 0;
+        while(ssize > 1024) {
+            ssize %= 1024;
+            flag++;
+        }
+        str.append("Total space consumed: ").append(ssize);
+        if(flag == 0) {
+            str.append(" B\n");
+        } else if(flag == 1) {
+            str.append(" KB\n");
+        } else if(flag == 2) {
+            str.append(" MB\n");
+        } else if(flag == 3) {
+            str.append(" GB\n");
+        } else if(flag == 4) {
+            str.append(" TB\n");
+        }
         return str.toString();
     }
 }
